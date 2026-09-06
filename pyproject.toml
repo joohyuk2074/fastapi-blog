@@ -1,0 +1,24 @@
+[project]
+name = "blog"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "cryptography>=50.0.1",
+    "fastapi[standard]>=0.141.1",
+    "pydantic-settings>=2.15.0",
+    "pymysql>=1.2.0",
+    "sqlalchemy>=2.0.52",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.16.6",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+# E: 코드 스타일 / F: 미사용 임포트·변수 / I: 임포트 정렬
+# UP: 최신 문법 전환 / B: 버그 유발 패턴
+select = ["E", "F", "I", "UP", "B"]

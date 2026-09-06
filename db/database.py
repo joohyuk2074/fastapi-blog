@@ -1,20 +1,19 @@
-from sqlalchemy import create_engine, Connection
+from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.pool import QueuePool, NullPool
-from contextlib import contextmanager
-from fastapi import status
-from fastapi.exceptions import HTTPException
-from dotenv import load_dotenv
-import os
+from sqlalchemy.pool import QueuePool
 
-# database connection URL
-DATABASE_CONN = "mysql+mysqlconnector://root:<password>@localhost:3306/blog_db"
+from core.config import settings
 
-engine = create_engine(DATABASE_CONN, #echo=True,
-                       poolclass=QueuePool,
-                       #poolclass=NullPool, # Connection Pool 사용하지 않음. 
-                       pool_size=10, max_overflow=0,
-                       pool_recycle=300)
+# 접속 정보는 .env 에서 읽는다 (core/config.py 참고)
+engine = create_engine(
+    settings.database_url,
+    echo=settings.db_echo,
+    poolclass=QueuePool,
+    pool_size=settings.db_pool_size,
+    max_overflow=settings.db_max_overflow,
+    pool_recycle=settings.db_pool_recycle,
+)
+
 
 def direct_get_conn():
     conn = None
