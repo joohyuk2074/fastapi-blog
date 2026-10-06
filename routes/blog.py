@@ -3,7 +3,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 from db.database import direct_get_conn
-from schemas.blog_schema import Blog
+from schemas.blog_schema import BlogData
 
 # router 생성
 router = APIRouter(prefix="/blogs", tags=["blogs"])
@@ -15,16 +15,16 @@ async def get_all_blogs(request: Request):
     try:
         conn = direct_get_conn()
         query = """
-        SELECT id, title, author, content, image_loc, modified_at FROM blog
+        SELECT id, title, author, content, image_loc, modified_dt FROM blog
         """
         result = conn.execute(text(query))
         rows = [
-            Blog(
+            BlogData(
                 id=row.id,
                 title=row.title,
                 author=row.author,
                 content=row.content,
-                image_loc=row.image_loc,
+                image_loc=row.image_loc,    # Null -> None
                 modified_dt=row.modified_dt,
             )
             for row in result
